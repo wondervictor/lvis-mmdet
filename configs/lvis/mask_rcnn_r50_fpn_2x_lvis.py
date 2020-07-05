@@ -4,6 +4,7 @@ _base_ = [
     '../_base_/default_runtime.py'
 ]
 model = dict(
+    pretrained='pretrained_model/resnet50-19c8e357.pth',
     roi_head=dict(
         bbox_head=dict(num_classes=1230), mask_head=dict(num_classes=1230)))
 test_cfg = dict(

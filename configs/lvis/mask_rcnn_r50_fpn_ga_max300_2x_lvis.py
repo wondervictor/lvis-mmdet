@@ -4,6 +4,7 @@ _base_ = [
     '../_base_/default_runtime.py'
 ]
 model = dict(
+    pretrained='pretrained_model/resnet50-19c8e357.pth',
     rpn_head=dict(
         _delete_=True,
         type='GARPNHead',
