@@ -3,6 +3,7 @@ import torch
 from ..builder import BBOX_ASSIGNERS
 from ..iou_calculators import build_iou_calculator
 from .max_iou_assigner import MaxIoUAssigner
+from mmdet.utils.memory import retry_if_cuda_oom
 
 
 @BBOX_ASSIGNERS.register_module()
@@ -118,7 +119,8 @@ class ApproxMaxIoUAssigner(MaxIoUAssigner):
                 gt_bboxes_ignore = gt_bboxes_ignore.cpu()
             if gt_labels is not None:
                 gt_labels = gt_labels.cpu()
-        all_overlaps = self.iou_calculator(approxs, gt_bboxes)
+        # add retry
+        all_overlaps = retry_if_cuda_oom(self.iou_calculator)(approxs, gt_bboxes)
 
         overlaps, _ = all_overlaps.view(approxs_per_octave, num_squares,
                                         num_gts).max(dim=0)
