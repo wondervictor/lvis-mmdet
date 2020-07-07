@@ -25,7 +25,7 @@ train_pipeline = [
     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks']),
 ]
 dataset_type = 'LVISDataset'
-data_root = 'data/lvis/'
+data_root = 'data/coco/'
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=2,
