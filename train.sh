@@ -60,7 +60,7 @@ cp lvis/lvis_v0.5_val.json coco/annotations/
 cd ..
 
 
-GPUS=2
+GPUS=8
 # ask_rcnn_r50_fpn_ga_2x_lvis
 # 
 # CONFIG=mask_rcnn_r50_fpn_2x_lvis
