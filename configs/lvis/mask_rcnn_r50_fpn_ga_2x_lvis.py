@@ -61,7 +61,7 @@ train_pipeline = [
     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks']),
 ]
 dataset_type = 'LVISDataset'
-data_root = 'data/lvis/'
+data_root = 'data/coco/'
 data = dict(
     samples_per_gpu=2,
     workers_per_gpu=2,
@@ -104,8 +104,8 @@ train_cfg = dict(
         sampler=dict(type='RandomSampler', num=256)))
 
 # schedule
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
-optimizer_config = dict(_delete_=True, grad_clip=dict(max_norm=35, norm_type=2))
+optimizer = dict(type='SGD', lr=0.005, momentum=0.9, weight_decay=0.0001)
+optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 # learning policy
 lr_config = dict(
     policy='step',
