@@ -121,6 +121,7 @@ class ApproxMaxIoUAssigner(MaxIoUAssigner):
                 gt_labels = gt_labels.cpu()
         # add retry
         all_overlaps = retry_if_cuda_oom(self.iou_calculator)(approxs, gt_bboxes)
+        all_overlaps = all_overlaps.to(approxs.device)
 
         overlaps, _ = all_overlaps.view(approxs_per_octave, num_squares,
                                         num_gts).max(dim=0)

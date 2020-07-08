@@ -49,7 +49,10 @@ def multiclass_nms(multi_bboxes,
         labels = multi_bboxes.new_zeros((0, ), dtype=torch.long)
         return bboxes, labels
 
+    device = bboxes.device
     dets, keep = retry_if_cuda_oom(batched_nms)(bboxes, scores, labels, nms_cfg)
+    dets = dets.to(device)
+    keep = keep.to(device)
 
     if max_num > 0:
         dets = dets[:max_num]
