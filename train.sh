@@ -68,7 +68,8 @@ CONFIG=mask_rcnn_r50_fpn_ga_2x_lvis
 
 ####train
 
-python -m torch.distributed.launch --nproc_per_node=$GPUS --master_port=23333 tools/train.py configs/lvis/${CONFIG}.py  --launcher pytorch --work-dir output/${CONFIG}
+python -m torch.distributed.launch --nproc_per_node=$GPUS --master_port=23333 tools/train.py configs/lvis/${CONFIG}.py  --launcher pytorch --work-dir output/${CONFIG} 
+#--resume-from output/${CONFIG}/epoch_3.pth
 
 
 # python tools/train.py configs/$1.py  --resume_from /job_data/work_dirs/$1/epoch_53.pth

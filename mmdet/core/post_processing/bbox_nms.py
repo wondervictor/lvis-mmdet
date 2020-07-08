@@ -1,6 +1,7 @@
 import torch
 
 from mmdet.ops.nms import batched_nms
+from mmdet.utils.memory import retry_if_cuda_oom
 
 
 def multiclass_nms(multi_bboxes,
@@ -48,7 +49,7 @@ def multiclass_nms(multi_bboxes,
         labels = multi_bboxes.new_zeros((0, ), dtype=torch.long)
         return bboxes, labels
 
-    dets, keep = batched_nms(bboxes, scores, labels, nms_cfg)
+    dets, keep = retry_if_cuda_oom(batched_nms)(bboxes, scores, labels, nms_cfg)
 
     if max_num > 0:
         dets = dets[:max_num]
