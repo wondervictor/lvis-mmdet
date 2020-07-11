@@ -6,6 +6,7 @@ import tempfile
 import numpy as np
 from mmcv.utils import print_log
 from terminaltables import AsciiTable
+from mmdet.core import eval_recalls
 
 from .builder import DATASETS
 from .coco import CocoDataset
@@ -297,6 +298,30 @@ class LVISDataset(CocoDataset):
                 info['filename'] = info['file_name']
             data_infos.append(info)
         return data_infos
+
+    def fast_eval_recall(self, results, proposal_nums, iou_thrs, logger=None):
+        gt_bboxes = []
+        for i in range(len(self.img_ids)):
+            ann_ids = self.coco.get_ann_ids(img_ids=[self.img_ids[i]])
+            ann_info = self.coco.load_anns(ann_ids)
+            if len(ann_info) == 0:
+                gt_bboxes.append(np.zeros((0, 4)))
+                continue
+            bboxes = []
+            for ann in ann_info:
+                if ann.get('ignore', False) or ann['iscrowd']:
+                    continue
+                x1, y1, w, h = ann['bbox']
+                bboxes.append([x1, y1, x1 + w, y1 + h])
+            bboxes = np.array(bboxes, dtype=np.float32)
+            if bboxes.shape[0] == 0:
+                bboxes = np.zeros((0, 4))
+            gt_bboxes.append(bboxes)
+
+        recalls = eval_recalls(
+            gt_bboxes, results, proposal_nums, iou_thrs, logger=logger)
+        ar = recalls.mean(axis=1)
+        return ar
 
     def evaluate(self,
                  results,
