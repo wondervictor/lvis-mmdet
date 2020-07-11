@@ -309,7 +309,7 @@ class LVISDataset(CocoDataset):
                 continue
             bboxes = []
             for ann in ann_info:
-                if ann.get('ignore', False) or ann['iscrowd']:
+                if ann.get('ignore', False):
                     continue
                 x1, y1, w, h = ann['bbox']
                 bboxes.append([x1, y1, x1 + w, y1 + h])
