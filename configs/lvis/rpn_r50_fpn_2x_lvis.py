@@ -1,6 +1,5 @@
 _base_ = [
-    '../_base_/models/rpn_r50_fpn.py', '../_base_/datasets/coco_detection.py',
-    '../_base_/default_runtime.py'
+    "../rpn/rpn_r50_fpn_1x_coco.py"
 ]
 
 img_norm_cfg = dict(
